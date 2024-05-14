@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 import { ContractEntity } from "../../domain/entities/contract.entity";
 import { diContainer } from "@/lib/di/initDi";
 import { FetchContractByAddressUsecase } from "../../domain/usecases/fetch-contract-by-address.usecase";
@@ -11,9 +11,9 @@ export interface ContractsContextValue {
   clearLoadedContract(): void;
 }
 
-const ContractsContext = createContext<ContractsContextValue | undefined>(
-  undefined,
-);
+export const ContractsContext = createContext<
+  ContractsContextValue | undefined
+>(undefined);
 
 export function ContractsProvider(props: { children: React.ReactNode }) {
   const toast = useToast();
@@ -53,6 +53,7 @@ export function ContractsProvider(props: { children: React.ReactNode }) {
         setIsLoadingContract(false);
       }
     },
+    isLoadingContract,
   };
 
   return (
@@ -61,7 +62,3 @@ export function ContractsProvider(props: { children: React.ReactNode }) {
     </ContractsContext.Provider>
   );
 }
-
-export const useContracts = () => {
-  return useContext(ContractsContext) as ContractsContextValue;
-};

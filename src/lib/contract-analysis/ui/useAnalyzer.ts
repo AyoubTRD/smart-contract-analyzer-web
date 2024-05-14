@@ -1,4 +1,5 @@
 import { useContext } from "react";
-import { AnalyzerContext } from "./analyzer.context";
+import { AnalyzerContext, AnalyzerContextValue } from "./analyzer.context";
 
-export const useAnalyzer = () => useContext(AnalyzerContext);
+export const useAnalyzer = () =>
+  useContext(AnalyzerContext) as AnalyzerContextValue;

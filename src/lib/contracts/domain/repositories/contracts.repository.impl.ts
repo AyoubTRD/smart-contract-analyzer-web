@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { ContractsDataSource } from "../../data/sources/contracts.datasource";
+import type { ContractsDataSource } from "../../data/sources/contracts.datasource";
 import { ContractEntity } from "../entities/contract.entity";
 import { ContractsRepository } from "./contracts.repository";
 import { DI_TOKENS } from "@/lib/di/DI_TOKENS";

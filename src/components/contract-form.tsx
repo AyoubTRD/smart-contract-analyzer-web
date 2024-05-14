@@ -17,7 +17,7 @@ import { FormControl, FormField, FormItem, FormLabel } from "./ui/form";
 import { useEffect, useMemo } from "react";
 import { ContractInfo } from "./contract-info";
 import { useAnalyzer } from "@/lib/contract-analysis/ui/useAnalyzer";
-import { useContracts } from "@/lib/contracts/ui/contexts/contracts.context";
+import { useContracts } from "@/lib/contracts/ui/contexts/useContracts";
 import { useToast } from "./ui/use-toast";
 
 enum ContractEntryMethod {
@@ -46,7 +46,6 @@ export function ContractForm() {
     analyzeBytecode,
     analyzeSourceCode,
     models,
-    isFetchingModels,
     fetchAvailableModels,
   } = useAnalyzer();
 
@@ -54,12 +53,8 @@ export function ContractForm() {
     fetchAvailableModels();
   }, [fetchAvailableModels]);
 
-  const {
-    getContractByAddress,
-    loadedContract,
-    isLoadingContract,
-    clearLoadedContract,
-  } = useContracts();
+  const { getContractByAddress, loadedContract, isLoadingContract } =
+    useContracts();
 
   const handleFetchContract = () => {
     getContractByAddress(address as string);

@@ -13,14 +13,14 @@ export class MockAnalysisDataSource implements AnalysisDataSource {
 
   requestAnalysisForBytecode(
     modelId: string,
-    bytecode: string,
+    _bytecode: string,
   ): Promise<AnalysisResultModel> {
     return this.requestAnalysisForSourceCode(modelId, "");
   }
 
   async requestAnalysisForSourceCode(
     modelId: string,
-    sourceCode: string,
+    _sourceCode: string,
   ): Promise<AnalysisResultModel> {
     const model = await this.analyzerModelDatasource.getModelById(modelId);
 

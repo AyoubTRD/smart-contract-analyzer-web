@@ -6,7 +6,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { Form } from "./ui/form";
@@ -19,6 +18,7 @@ import { ContractInfo } from "./contract-info";
 import { useAnalyzer } from "@/lib/contract-analysis/ui/useAnalyzer";
 import { useContracts } from "@/lib/contracts/ui/contexts/useContracts";
 import { useToast } from "./ui/use-toast";
+import { Input } from "./ui/input";
 
 enum ContractEntryMethod {
   code = "code",
@@ -51,6 +51,7 @@ export function ContractForm() {
 
   useEffect(() => {
     fetchAvailableModels();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchAvailableModels]);
 
   const { getContractByAddress, loadedContract, isLoadingContract } =

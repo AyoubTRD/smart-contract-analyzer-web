@@ -1,5 +1,8 @@
+import { injectable } from "tsyringe";
 import { AnalyzerModelDataSource } from "./analyzer-model.datasource";
 import { AnalyzerModelModel } from "./models/analyzer-model.model";
+
+@injectable()
 export class MockAnalyzerModelDataSource implements AnalyzerModelDataSource {
   async getAvailableModels(): Promise<AnalyzerModelModel[]> {
     return [

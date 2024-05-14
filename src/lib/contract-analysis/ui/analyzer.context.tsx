@@ -44,7 +44,6 @@ export const AnalyzerProvider = ({
     );
 
     try {
-      throw new Error("TEST");
       const analysis = await getSourceCodeAnalysisUsecase.execute({
         modelId: model.id,
         sourcecode,

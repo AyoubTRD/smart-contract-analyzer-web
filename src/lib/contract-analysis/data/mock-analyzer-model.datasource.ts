@@ -5,6 +5,7 @@ import { AnalyzerModelModel } from "./models/analyzer-model.model";
 @injectable()
 export class MockAnalyzerModelDataSource implements AnalyzerModelDataSource {
   async getAvailableModels(): Promise<AnalyzerModelModel[]> {
+    console.log("Fetching models");
     return [
       new AnalyzerModelModel(
         "cnn",

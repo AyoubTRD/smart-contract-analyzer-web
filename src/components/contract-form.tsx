@@ -51,7 +51,6 @@ export function ContractForm() {
 
   useEffect(() => {
     fetchAvailableModels();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchAvailableModels]);
 
   const { getContractByAddress, loadedContract, isLoadingContract } =

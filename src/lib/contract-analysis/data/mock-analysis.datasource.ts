@@ -22,6 +22,7 @@ export class MockAnalysisDataSource implements AnalysisDataSource {
     modelId: string,
     _sourceCode: string,
   ): Promise<AnalysisResultModel> {
+    console.log("Getting analysis for source code");
     const model = await this.analyzerModelDatasource.getModelById(modelId);
 
     if (!model) throw new Error(`Model: ${modelId} not found`);

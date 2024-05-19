@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useCallback, useState } from "react";
 import { AnalysisResultEntity } from "../domain/entities/analysis-result.entity";
 import { useToast } from "@/components/ui/use-toast";
 import { diContainer } from "@/lib/di/initDi";
@@ -29,76 +29,76 @@ export const AnalyzerProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const toast = useToast();
+  const { toast } = useToast();
   const [analysisResult, setAnalysisResult] = useState<AnalysisResultEntity>();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   // Function to request analysis for a contract model
-  const analyzeSourceCode = async (
-    model: AnalyzerModelEntity,
-    sourcecode: string,
-  ) => {
-    setIsAnalyzing(true);
-    const getSourceCodeAnalysisUsecase = diContainer.resolve(
-      GetAnalysisForSourceCodeUsecase,
-    );
+  const analyzeSourceCode = useCallback(
+    async (model: AnalyzerModelEntity, sourcecode: string) => {
+      setIsAnalyzing(true);
+      const getSourceCodeAnalysisUsecase = diContainer.resolve(
+        GetAnalysisForSourceCodeUsecase,
+      );
 
-    try {
-      const analysis = await getSourceCodeAnalysisUsecase.execute({
-        modelId: model.id,
-        sourcecode,
-      });
-      // Perform contract analysis here and set the result
-      setAnalysisResult(analysis);
-    } catch (error) {
-      console.error("Error analyzing contract:", error);
-      toast.toast({
-        variant: "destructive",
-        title: "Unknown error",
-        description: "Error analyzing contract:" + error,
-      });
-    } finally {
-      setIsAnalyzing(false);
-    }
-  };
+      try {
+        const analysis = await getSourceCodeAnalysisUsecase.execute({
+          modelId: model.id,
+          sourcecode,
+        });
+        // Perform contract analysis here and set the result
+        setAnalysisResult(analysis);
+      } catch (error) {
+        console.error("Error analyzing contract:", error);
+        toast({
+          variant: "destructive",
+          title: "Unknown error",
+          description: "Error analyzing contract:" + error,
+        });
+      } finally {
+        setIsAnalyzing(false);
+      }
+    },
+    [setIsAnalyzing, toast],
+  );
 
-  const analyzeBytecode = async (
-    model: AnalyzerModelEntity,
-    bytecode: string,
-  ) => {
-    setIsAnalyzing(true);
-    const getAnalysisUsecase = diContainer.resolve(
-      GetAnalysisForBytecodeUsecase,
-    );
+  const analyzeBytecode = useCallback(
+    async (model: AnalyzerModelEntity, bytecode: string) => {
+      setIsAnalyzing(true);
+      const getAnalysisUsecase = diContainer.resolve(
+        GetAnalysisForBytecodeUsecase,
+      );
 
-    try {
-      const analysis = await getAnalysisUsecase.execute({
-        modelId: model.id,
-        bytecode,
-      });
-      // Perform contract analysis here and set the result
-      setAnalysisResult(analysis);
-    } catch (error) {
-      console.error("Error analyzing contract:", error);
-      toast.toast({
-        variant: "destructive",
-        title: "Unknown error",
-        description: "Error analyzing contract:" + error,
-      });
-    } finally {
-      setIsAnalyzing(false);
-    }
-  };
+      try {
+        const analysis = await getAnalysisUsecase.execute({
+          modelId: model.id,
+          bytecode,
+        });
+        // Perform contract analysis here and set the result
+        setAnalysisResult(analysis);
+      } catch (error) {
+        console.error("Error analyzing contract:", error);
+        toast({
+          variant: "destructive",
+          title: "Unknown error",
+          description: "Error analyzing contract:" + error,
+        });
+      } finally {
+        setIsAnalyzing(false);
+      }
+    },
+    [setIsAnalyzing, toast],
+  );
 
-  const clearAnalysis = () => {
+  const clearAnalysis = useCallback(() => {
     setIsAnalyzing(false);
     setAnalysisResult(undefined);
-  };
+  }, [setIsAnalyzing, setAnalysisResult]);
 
   const [models, setModels] = useState<AnalyzerModelEntity[]>();
   const [isLoadingModels, setIsLoadingModels] = useState(false);
 
-  const fetchAvailableModels = async () => {
+  const fetchAvailableModels = useCallback(async () => {
     setIsLoadingModels(true);
     const fetchAvailableModelsUsecase = diContainer.resolve(
       FetchAvailableModelsUsecase,
@@ -108,7 +108,7 @@ export const AnalyzerProvider = ({
       setModels(models);
     } catch (error) {
       console.error("Error fetching available models:", error);
-      toast.toast({
+      toast({
         variant: "destructive",
         title: "Unknown error",
         description: "Error fetching available models:" + error,
@@ -116,7 +116,7 @@ export const AnalyzerProvider = ({
     } finally {
       setIsLoadingModels(false);
     }
-  };
+  }, [setIsLoadingModels, toast]);
 
   return (
     <AnalyzerContext.Provider

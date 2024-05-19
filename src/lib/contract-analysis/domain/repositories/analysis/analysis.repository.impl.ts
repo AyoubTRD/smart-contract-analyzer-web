@@ -15,6 +15,7 @@ export class AnalysisRepositoryImpl implements AnalysisRepository {
     modelId: string,
     sourcecode: string,
   ): Promise<AnalysisResultEntity> {
+    console.log("Repo: Getting analysis for source code");
     const result = await this.analysisDatasource.requestAnalysisForSourceCode(
       modelId,
       sourcecode,

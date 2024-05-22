@@ -55,10 +55,11 @@ export class V1ApiAnalysisDatasource implements AnalysisDataSource {
         modelId,
       },
     });
+    const data = JSON.parse(response.data);
 
     return new AnalysisResultModel(
       null,
-      response.data.vulnerabilities.map((v: any) => ({
+      data.vulnerabilities.map((v: any) => ({
         id: v.id,
         name: v.name,
         description: v.desc,

@@ -67,8 +67,15 @@ export function AnalysisSummary() {
 
           <h4 className="font-bold text-md mt-4">Detected vulnerabilites: </h4>
           <Accordion type="single" collapsible className="w-full">
-            {analysisResult.vulnerabilities.map((v) => (
-              <AccordionItem value={v.id}>
+            {analysisResult.vulnerabilities.map((v, i) => (
+              <AccordionItem
+                key={v.id}
+                className={cn(
+                  i === analysisResult.vulnerabilities.length - 1 &&
+                    "border-none",
+                )}
+                value={v.id}
+              >
                 <AccordionTrigger>{v.name}</AccordionTrigger>
                 <AccordionContent>
                   <Markdown className={"text-muted-foreground"}>

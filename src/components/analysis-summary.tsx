@@ -17,25 +17,42 @@ export function AnalysisSummary() {
 
   if (!analysisResult) return <></>;
 
+  const safe = analysisResult.vulnerabilities.length === 0;
+
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Analysis Summary</h2>
-      <Alert variant={"destructive"}>
+      <Alert variant={safe ? "default" : "destructive"}>
         <AlertCircle className="h-4 w-4" />
-        <AlertTitle className="font-bold">Vulnerabilities found!</AlertTitle>
+        <AlertTitle className="font-bold">
+          {safe ? "This smart contract is safe" : "Vulnerabilities found!"}
+        </AlertTitle>
         <AlertDescription
           className="mt-2
         "
         >
-          <p>{analysisResult.message}</p>
+          {safe ? (
+            <p className="text-green-400">
+              No vulnerabilities have been detected. However, you should be wary
+              of false positives. Check the{" "}
+              <a href="/docs" className="underline">
+                {" "}
+                documentation
+              </a>
+            </p>
+          ) : (
+            <>
+              <p>{analysisResult.message}</p>
 
-          <ul className="list list-disc list-inside">
-            {analysisResult.vulnerabilities.map((v) => (
-              <li key={v.id}>
-                {v.name}: {v.description}
-              </li>
-            ))}
-          </ul>
+              <ul className="list list-disc list-inside">
+                {analysisResult.vulnerabilities.map((v) => (
+                  <li key={v.id}>
+                    {v.name}: {v.description}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </AlertDescription>
       </Alert>
     </div>

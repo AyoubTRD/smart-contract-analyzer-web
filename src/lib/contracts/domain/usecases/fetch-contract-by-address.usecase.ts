@@ -12,6 +12,7 @@ export class FetchContractByAddressUsecase
     @inject(DI_TOKENS.ContractsRepository)
     private contractsRepository: ContractsRepository,
   ) {}
+
   execute(address: string): Promise<ContractEntity | null> {
     return this.contractsRepository.fetchContractByAddress(address);
   }

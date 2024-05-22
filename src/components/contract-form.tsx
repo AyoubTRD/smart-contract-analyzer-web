@@ -40,6 +40,7 @@ export function ContractForm() {
 
   const method = form.watch("method");
   const address = form.watch("address");
+  const code = form.watch("code");
 
   const {
     isAnalyzing,
@@ -85,9 +86,41 @@ export function ContractForm() {
       return;
     }
 
-    if (sourceCode) analyzeSourceCode(model, sourceCode);
-    else if (bytecode) analyzeBytecode(model, bytecode);
+    if (sourceCode && model.supportsSourceCode)
+      analyzeSourceCode(model, sourceCode);
+    else if (bytecode && model.supportsBytecode)
+      analyzeBytecode(model, bytecode);
+
+    if (!sourceCode && !bytecode) {
+      toast.toast({
+        variant: "destructive",
+        title: "Error",
+        description: "There is no source code or byte code to analyze",
+      });
+    }
   };
+
+  const showSourceCodeModels = useMemo(() => {
+    if (code) return true;
+    if (loadedContract?.code) return true;
+
+    return false;
+  }, [code, loadedContract]);
+
+  const showBytecodeModels = useMemo(() => {
+    if (loadedContract?.bytecode) return true;
+
+    return false;
+  }, [loadedContract]);
+
+  const modelsToShow = useMemo(
+    () =>
+      models.filter((m) => {
+        if (m.supportsBytecode && showBytecodeModels) return true;
+        if (m.supportsSourceCode && showSourceCodeModels) return true;
+      }),
+    [showBytecodeModels, showSourceCodeModels, models],
+  );
 
   return (
     <Form {...form}>
@@ -140,12 +173,12 @@ export function ContractForm() {
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select method" />
+                      <SelectValue placeholder="Select model" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     <SelectGroup>
-                      {models.map((model) => (
+                      {modelsToShow.map((model) => (
                         <SelectItem key={model.id} value={model.id}>
                           {model.name}
                         </SelectItem>

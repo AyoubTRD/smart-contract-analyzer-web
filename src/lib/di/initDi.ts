@@ -2,11 +2,11 @@ import { container } from "tsyringe";
 import { DI_TOKENS } from "./DI_TOKENS";
 import { EtherscanContractsDataSource } from "../contracts/data/sources/etherscan-contracts.datasource";
 import { ContractsRepositoryImpl } from "../contracts/domain/repositories/contracts.repository.impl";
-import { MockAnalyzerModelDataSource } from "../contract-analysis/data/mock-analyzer-model.datasource";
 import { AnalyzerModelRepositoryImpl } from "../contract-analysis/domain/repositories/analyzer-model/analyzer-model.repository.impl";
 import { AnalyzerModelAdapter } from "../contract-analysis/domain/entities/adapters/analyzer-model.adapter";
 import { MockAnalysisDataSource } from "../contract-analysis/data/mock-analysis.datasource";
 import { AnalysisRepositoryImpl } from "../contract-analysis/domain/repositories/analysis/analysis.repository.impl";
+import { V1ApiAnalyzerModelDatasource } from "../contract-analysis/data/v1-api-analyzer-model.datasource";
 
 export const diContainer = container;
 
@@ -23,7 +23,7 @@ export function initDI() {
 
   // Analyzer
   diContainer.register(DI_TOKENS.AnalyzerModelDataSource, {
-    useValue: new MockAnalyzerModelDataSource(),
+    useValue: new V1ApiAnalyzerModelDatasource(),
   });
   diContainer.register(DI_TOKENS.AnalyzerModelRepository, {
     useValue: new AnalyzerModelRepositoryImpl(

@@ -14,6 +14,7 @@ export class FetchAvailableModelsUsecase
   ) {}
 
   async execute(): Promise<AnalyzerModelEntity[]> {
+    console.log(this.analyzerModelRepository);
     return this.analyzerModelRepository.getAvailableModels();
   }
 }

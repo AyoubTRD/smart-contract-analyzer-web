@@ -10,26 +10,26 @@ import axios from "axios";
 export class V1ApiAnalysisDatasource implements AnalysisDataSource {
   axiosClient = new axios.Axios({
     baseURL: API_ENDPOINT + "/analyze",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 
   constructor(
     @inject(DI_TOKENS.AnalyzerModelDataSource)
-    private analyzerModelDatasource: AnalyzerModelDataSource,
+    private analyzerModelDatasource: AnalyzerModelDataSource
   ) {}
 
   async requestAnalysisForSourceCode(
     modelId: string,
-    sourceCode: string,
+    sourceCode: string
   ): Promise<AnalysisResultModel> {
     const model = await this.analyzerModelDatasource.getModelById(modelId);
     if (!model) throw new Error("Model does not exist");
-
-    const response = await this.axiosClient.get("/sourcecode", {
-      params: {
-        sourcecode: sourceCode,
-        modelId,
-      },
-    });
+    const response = await this.axiosClient.post(
+      "/sourcecode",
+      JSON.stringify({ sourcecode: sourceCode, modelId })
+    );
     const data = JSON.parse(response.data);
 
     return new AnalysisResultModel(
@@ -39,22 +39,20 @@ export class V1ApiAnalysisDatasource implements AnalysisDataSource {
         name: v.name,
         description: v.desc,
       })),
-      model,
+      model
     );
   }
   async requestAnalysisForBytecode(
     modelId: string,
-    bytecode: string,
+    bytecode: string
   ): Promise<AnalysisResultModel> {
     const model = await this.analyzerModelDatasource.getModelById(modelId);
     if (!model) throw new Error("Model does not exist");
 
-    const response = await this.axiosClient.get("/bytecode", {
-      params: {
-        bytecode: bytecode,
-        modelId,
-      },
-    });
+    const response = await this.axiosClient.post(
+      "/bytecode",
+      JSON.stringify({ bytecode: bytecode, modelId })
+    );
     const data = JSON.parse(response.data);
 
     return new AnalysisResultModel(
@@ -64,7 +62,7 @@ export class V1ApiAnalysisDatasource implements AnalysisDataSource {
         name: v.name,
         description: v.desc,
       })),
-      model,
+      model
     );
   }
 }

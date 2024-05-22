@@ -1,5 +1,4 @@
 import Markdown from "react-markdown";
-
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { useAnalyzer } from "@/lib/contract-analysis/ui/useAnalyzer";
@@ -10,6 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
+import { cn } from "@/lib/utils";
 
 export function AnalysisSummary() {
   const { analysisResult, isAnalyzing } = useAnalyzer();
@@ -28,8 +28,16 @@ export function AnalysisSummary() {
   const safe = analysisResult.vulnerabilities.length === 0;
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">Analysis Summary</h2>
+    <div className={cn(!safe && "p-4 border border-destructive rounded-md")}>
+      <h2
+        className={cn(
+          "text-2xl font-bold mb-4 flex items-center",
+          !safe && "text-destructive",
+        )}
+      >
+        {!safe && <AlertCircle className="text-destructive mr-4" />}{" "}
+        {!safe ? "Vulnerabilities detected!" : "Analysis"}
+      </h2>
       {safe ? (
         <Alert variant={safe ? "default" : "destructive"}>
           <AlertCircle className="h-4 w-4" />
@@ -63,7 +71,9 @@ export function AnalysisSummary() {
               <AccordionItem value={v.id}>
                 <AccordionTrigger>{v.name}</AccordionTrigger>
                 <AccordionContent>
-                  <Markdown>{v.description}</Markdown>
+                  <Markdown className={"text-muted-foreground"}>
+                    {v.description}
+                  </Markdown>
                 </AccordionContent>
               </AccordionItem>
             ))}

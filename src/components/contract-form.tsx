@@ -19,6 +19,7 @@ import { useAnalyzer } from "@/lib/contract-analysis/ui/useAnalyzer";
 import { useContracts } from "@/lib/contracts/ui/contexts/useContracts";
 import { useToast } from "./ui/use-toast";
 import { Input } from "./ui/input";
+import { Skeleton } from "./ui/skeleton";
 
 enum ContractEntryMethod {
   code = "code",
@@ -168,6 +169,7 @@ export function ContractForm() {
               <FormItem>
                 <FormLabel>Model</FormLabel>
                 <Select
+                  disabled={modelsToShow.length === 0}
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
@@ -259,6 +261,13 @@ contract SimpleStorage {
         >
           {isAnalyzing ? "Analyzing" : "Analyze"}
         </Button>
+
+        {isLoadingContract && (
+          <div className="col-span-full">
+            <Skeleton className="w-full h-10 mb-4" />
+            <Skeleton className="w-full h-80" />
+          </div>
+        )}
 
         {loadedContract && (
           <ContractInfo className="col-span-full" contract={loadedContract} />

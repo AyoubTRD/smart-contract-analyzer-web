@@ -6,8 +6,6 @@ import { Skeleton } from "./ui/skeleton";
 export function AnalysisSummary() {
   const { analysisResult, isAnalyzing } = useAnalyzer();
 
-  if (!analysisResult) return <div></div>;
-
   if (isAnalyzing) {
     return (
       <>
@@ -16,6 +14,8 @@ export function AnalysisSummary() {
       </>
     );
   }
+
+  if (!analysisResult) return <></>;
 
   return (
     <div>

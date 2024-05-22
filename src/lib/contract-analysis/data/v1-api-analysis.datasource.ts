@@ -33,7 +33,7 @@ export class V1ApiAnalysisDatasource implements AnalysisDataSource {
     const data = JSON.parse(response.data);
 
     return new AnalysisResultModel(
-      null,
+      data.message ?? null,
       data.vulnerabilities.map((v: any) => ({
         id: v.id,
         name: v.name,
@@ -58,7 +58,7 @@ export class V1ApiAnalysisDatasource implements AnalysisDataSource {
     const data = JSON.parse(response.data);
 
     return new AnalysisResultModel(
-      null,
+      data.message ?? null,
       data.vulnerabilities.map((v: any) => ({
         id: v.id,
         name: v.name,

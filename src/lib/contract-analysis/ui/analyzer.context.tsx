@@ -36,6 +36,7 @@ export const AnalyzerProvider = ({
   // Function to request analysis for a contract model
   const analyzeSourceCode = useCallback(
     async (model: AnalyzerModelEntity, sourcecode: string) => {
+      setAnalysisResult(undefined);
       setIsAnalyzing(true);
       const getSourceCodeAnalysisUsecase = diContainer.resolve(
         GetAnalysisForSourceCodeUsecase,
@@ -64,6 +65,7 @@ export const AnalyzerProvider = ({
 
   const analyzeBytecode = useCallback(
     async (model: AnalyzerModelEntity, bytecode: string) => {
+      setAnalysisResult(undefined);
       setIsAnalyzing(true);
       const getAnalysisUsecase = diContainer.resolve(
         GetAnalysisForBytecodeUsecase,

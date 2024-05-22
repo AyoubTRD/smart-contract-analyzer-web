@@ -1,11 +1,21 @@
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { useAnalyzer } from "@/lib/contract-analysis/ui/useAnalyzer";
+import { Skeleton } from "./ui/skeleton";
 
 export function AnalysisSummary() {
-  const { analysisResult } = useAnalyzer();
+  const { analysisResult, isAnalyzing } = useAnalyzer();
 
   if (!analysisResult) return <div></div>;
+
+  if (isAnalyzing) {
+    return (
+      <>
+        <Skeleton className="w-24 h-6 mb-4" />
+        <Skeleton className="w-full h-40 mb-4" />
+      </>
+    );
+  }
 
   return (
     <div>

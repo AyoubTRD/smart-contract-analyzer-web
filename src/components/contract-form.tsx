@@ -257,7 +257,7 @@ contract SimpleStorage {
           disabled={!canSubmitForm || isAnalyzing}
           className="w-full col-span-full"
         >
-          Analyze
+          {isAnalyzing ? "Analyzing" : "Analyze"}
         </Button>
 
         {loadedContract && (

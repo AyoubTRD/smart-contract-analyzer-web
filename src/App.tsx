@@ -19,7 +19,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark">
+    <ThemeProvider defaultTheme="light">
       <Header />
       <main className="mt-4 container">
         <RouterProvider router={router} />

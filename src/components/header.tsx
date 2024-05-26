@@ -6,7 +6,17 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
+import { Switch } from "./ui/switch";
+import { useTheme } from "./theme-provider";
+
 export function Header() {
+  const { theme, setTheme } = useTheme();
+
+  const toggleTheme = () => {
+    if (theme === "light") setTheme("dark");
+    else setTheme("light");
+  };
+
   return (
     <div className="border-b border-border">
       <header className="py-6 flex items-center justify-between container ">
